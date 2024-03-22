@@ -11,27 +11,41 @@ const wordsList = [
     'PURE',
     'COOK',
     'MOVE',
-    'WELL'
+    'WELL',
+    'HIKE',
+    'REST',
+    'FAST',
+    'HERB',
+    'BIKE',
+    'JUMP',
+    'SOUP',
+    'MILK',
+    'CALM',
+    'EASE',
+    'CURE',
+    'LEAN',
+    'KIND',
+    'WARM',
+    'GLOW',
+    'PACE',
+    'LEAF',
+    'LUSH',
+    'PARK',
+    'COOL',
+    'HOPE',
+    'CARE',
 ]
 
 function initGame()
 {
     function randomNum(min, max)
     {return Math.floor(Math.random() * (max - min + 1)) + min;}
-    function shuffleArray(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [array[i], array[j]] = [array[j], array[i]]; // Swap elements
-        }
-        return array;
-    }
 
-    var grid = [ '-', '-', '-', '-', 
-                   '-', '-', '-', '-',
-                   '-', '-', '-', '-',
-                   '-', '-', '-', '-' ]
+    // var grid = [ '-', '-', '-', '-', 
+    //                '-', '-', '-', '-',
+    //                '-', '-', '-', '-',
+    //                '-', '-', '-', '-' ]
 
-    var letters = []
 
     var r = 0
     while (r < 4)
@@ -47,27 +61,32 @@ function initGame()
     
         grid[(4*r) + randomLetterIndex] = word[randomLetterIndex]
     
-    
+        var wordL = []
         for (l in word)
         {
             const lett = word[l]
+            correctGrid.push(lett)
             if(l != randomLetterIndex)
             {
-                letters.push(lett)
+                wordL.push(lett)
             }
         }
-    
-        letters = shuffleArray(letters)
+        
+        totalLettersList.push(wordL)
+        // letters = shuffleArray(letters)
 
         r+=1
     }
 
 
 
-    loadGrid(grid)
-    loadOutsideGrid(letters)
+    // loadGrid(grid)
+    // loadOutsideGrid(letters)
 
 
-
+    cycleGame(0)
 
 }
+
+
+
