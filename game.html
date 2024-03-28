@@ -6,7 +6,8 @@
     <title>Living your best life - PLAY</title>
 </head>
 <body>
-    <div style="width: 100vw; height: 100vh; object-fit: contain; display: flex; justify-content: center; align-items: center;">
+    <div id="container" style="width: 100vw; height: 100vh; object-fit: contain; display: flex; justify-content: center; align-items: center; transform-origin: top left;
+    transition: transform 0.3s ease; /* Optional: Add smooth transition */">
         <img src="/Assets/bg.png" style="width: 100%; height: 100%; position: absolute; top: 0px; left: 0px;">
 
         <div id="gridContainer" style="width: 500px; max-height: 500px; position: absolute; top: 100px; display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;">
@@ -58,6 +59,55 @@
     var totalLettersList = []
     var lettersList = []
     var currentRow = -1
+
+    var zoomAmount = 1
+
+    var IW = window.innerWidth * zoomAmount
+    var IH = window.innerHeight
+
+
+  // Function to set zoom level
+    function setZoom(zoomLevel) {
+        const gameContainer = document.getElementById('container');
+        gameContainer.style.transform = `scale(${zoomLevel})`;
+
+        // Adjust container size based on zoom level
+        gameContainer.style.width = JSON.parse(gameContainer.style.width.split('vw')[0]) * zoomAmount + 'vw'
+        gameContainer.style.height = JSON.parse(gameContainer.style.height.split('vh')[0]) * zoomAmount + 'vh'
+
+        IW = window.innerWidth * zoomAmount
+        IH = window.innerHeight
+    }
+
+    // Example usage:
+    if(window.innerHeight <= 900)
+    {
+        zoomAmount = 1.3
+    }
+    if(window.innerHeight <= 680)
+    {
+        zoomAmount = 1.5
+    }
+    if(window.innerHeight <= 590)
+    {
+        zoomAmount = 1.7
+    }
+    if(window.innerHeight <= 520)
+    {
+        zoomAmount = 1.9
+    }
+    if(window.innerHeight <= 470)
+    {
+        zoomAmount = 2.1
+    }
+    if(window.innerHeight <= 420)
+    {
+        zoomAmount = 2.3
+    }
+
+
+    setZoom(1/zoomAmount)
+
 
 
     function loadGrid(g)
@@ -234,7 +284,7 @@
 
             console.log()
 
-            document.getElementById('outsideGridContainer').children[letterBox].style.left = document.getElementById('gridContainer').children[boxSpace].offsetLeft + (window.innerWidth / 2) - (250) + 'px'
+            document.getElementById('outsideGridContainer').children[letterBox].style.left = document.getElementById('gridContainer').children[boxSpace].offsetLeft + (IW / 2) - (250) + 'px'
             document.getElementById('outsideGridContainer').children[letterBox].style.top = document.getElementById('gridContainer').children[boxSpace].offsetTop + 100 + 'px'
 
             // document.getElementById('gridContainer').children[boxSpace].style.borderColor = 'transparent'
@@ -301,8 +351,8 @@
         })
 
         addEventListener('mousemove', (event)=>{
-            const x = event.clientX
-            const y = event.clientY
+            const x = event.clientX * zoomAmount
+            const y = event.clientY * zoomAmount
 
             const boxWidth = 90
             const boxHeight = 90
@@ -321,8 +371,8 @@
 
 
 
-                const leftPost = document.getElementById('outsideGridContainer').children[currentBox].offsetLeft - (window.innerWidth/2) +250 + 45
-                const topPost = document.getElementById('outsideGridContainer').children[currentBox].offsetTop - 100 + 45
+                const leftPost = (document.getElementById('outsideGridContainer').children[currentBox].offsetLeft - (IW/2) +250 + 45)
+                const topPost = (document.getElementById('outsideGridContainer').children[currentBox].offsetTop - 100 + 45)
 
                 const parentBoxes = document.getElementById('gridContainer').children
 
@@ -424,7 +474,7 @@
                     {
                         const letterElem = lettersList[lIndx]
 
-                        const leftPostLet = letterElem.offsetLeft - (window.innerWidth/2) +250 + 45
+                        const leftPostLet = letterElem.offsetLeft - (IW/2) +250 + 45
                         const topPostLet = letterElem.offsetTop - 100 + 45
 
                         if(leftPostLet > boxElem.offsetLeft - (gapSpace) && leftPostLet < boxElem.offsetLeft + boxesWidthAmdHeight)
